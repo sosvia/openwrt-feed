@@ -28,7 +28,6 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/libicapapi/Default
   URL:=http://c-icap.sourceforge.net/
-  DEPENDS:=+libc +libpcre +libpthread +librt +zlib +libbz2
   MAINTAINER:=Jorge Vargas <jorge.vargas@saint-tech.com>
 endef
 
@@ -36,6 +35,7 @@ define Package/libicapapi
   $(call Package/libicapapi/Default)
   SECTION:=libs
   CATEGORY:=Libraries
+  DEPENDS:=+libc +libpcre +libpthread +librt +zlib +libbz2 +libdb47
   TITLE:=A library to simplify ICAP programming
 endef
 
@@ -48,7 +48,7 @@ define Package/$(PKG_NAME)
   SUBMENU:=Web Servers/Proxies
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS+=+libicapapi
+  DEPENDS:=+libicapapi
   TITLE:=An ICAP server
 endef
 
