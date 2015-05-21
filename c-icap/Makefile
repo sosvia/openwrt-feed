@@ -65,6 +65,7 @@ CONFIGURE_VARS += \
 define Build/Prepare
 	$(call Build/Prepare/Default)
 	echo $(PKG_VERSION) > $(PKG_BUILD_DIR)/VERSION.m4
+	mkdir -p $(PKG_INSTALL_DIR)/etc
 endef
 
 define Build/InstallDev
