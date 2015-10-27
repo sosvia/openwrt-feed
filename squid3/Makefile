@@ -40,16 +40,16 @@ define Package/squid3/description
 endef
 
 define Package/squid3/conffiles
-/etc/squid3/mime.conf
-/etc/squid3/squid.conf
+/etc/squid/mime.conf
+/etc/squid/squid.conf
 endef
 
 CONFIGURE_ARGS += \
 	--config-cache \
 	--enable-ssl \
-	--datadir=/usr/share/squid3 \
-	--libexecdir=/usr/lib/squid3 \
-	--sysconfdir=/etc/squid3 \
+	--datadir=/usr/share/squid \
+	--libexecdir=/usr/lib/squid \
+	--sysconfdir=/etc/squid \
 	--enable-shared \
 	--enable-static \
 	--enable-x-accelerator-vary \
@@ -100,23 +100,35 @@ endef
 
 define BuildPlugin
   define Package/$(1)/install
-	$(INSTALL_DIR) $$(1)/usr/lib/squid3
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/squid3/$(2) $$(1)/usr/lib/squid3/
+	$(INSTALL_DIR) $$(1)/usr/lib/squid
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/squid/$(2) $$(1)/usr/lib/squid/
   endef
 
   $$(eval $$(call BuildPackage,$(1)))
 endef
 
 define Package/squid3/install
-	$(INSTALL_DIR) $(1)/etc/squid3
-	$(CP) $(PKG_INSTALL_DIR)/etc/squid3/mime.conf $(1)/etc/squid3/
-	$(CP) $(PKG_INSTALL_DIR)/etc/squid3/squid.conf $(1)/etc/squid3/
-	$(INSTALL_DIR) $(1)/usr/share/squid3
-	$(CP) $(PKG_INSTALL_DIR)/usr/share/squid3/errors/{pt-pt,pt,pt-br,en} $(1)/usr/share/squid3/
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/squid $(1)/usr/sbin/
-	$(INSTALL_DIR) $(1)/usr/lib/squid3
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/squid3/{ssl_crtd,unlinkd,pinger,log_file_daemon} $(1)/usr/lib/squid3/
+
+	$(INSTALL_DIR) $(1)/usr/lib/squid
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/squid/{ssl_crtd,unlinkd,pinger,log_file_daemon} $(1)/usr/lib/squid/
+
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_CONF) ./files/squid.config $(1)/etc/config/squid
+
+	$(INSTALL_DIR) $(1)/etc/squid
+	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/squid/mime.conf $(1)/etc/squid/
+	$(INSTALL_CONF) ./files/squid.conf $(1)/etc/squid/
+
+	$(INSTALL_DIR) $(1)/etc/init.d/
+	$(INSTALL_BIN) ./files/squid.init $(1)/etc/init.d/squid
+
+	$(INSTALL_DIR) $(1)/usr/share/squid/icons/
+	$(CP) $(PKG_INSTALL_DIR)/usr/share/squid/icons/* $(1)/usr/share/squid/icons/
+
+	$(INSTALL_DIR) $(1)/usr/share/squid/errors/templates/
+	$(CP) $(PKG_INSTALL_DIR)/usr/share/squid/errors/templates/* $(1)/usr/share/squid/errors/templates/
 endef
 
 $(eval $(call BuildPackage,squid3,+librt,+libstdcpp,+libltdl,+libnettle,+libnetfilter-conntrack))
