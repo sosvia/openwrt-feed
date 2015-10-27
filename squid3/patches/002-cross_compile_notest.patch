@@ -1,0 +1,57 @@
+diff -uNr squid-3.4.5/configure modificado-squid-3.4.5/configure
+--- squid-3.4.5/configure	2014-05-02 09:10:36.000000000 -0300
++++ modificado-squid-3.4.5/configure	2014-05-13 09:01:50.000000000 -0300
+@@ -22223,7 +22223,7 @@
+   if test "$cross_compiling" = yes; then :
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+ $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "cannot run test program while cross compiling
++as_fn_error1 $? "cannot run test program while cross compiling
+ See \`config.log' for more details" "$LINENO" 5; }
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+@@ -22271,7 +22271,7 @@
+   if test "$cross_compiling" = yes; then :
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+ $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "cannot run test program while cross compiling
++as_fn_error1 $? "cannot run test program while cross compiling
+ See \`config.log' for more details" "$LINENO" 5; }
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+@@ -24876,7 +24876,7 @@
+     if test "$cross_compiling" = yes; then :
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+ $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "cannot run test program while cross compiling
++as_fn_error1 $? "cannot run test program while cross compiling
+ See \`config.log' for more details" "$LINENO" 5; }
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+@@ -24901,7 +24901,7 @@
+     if test "$cross_compiling" = yes; then :
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+ $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "cannot run test program while cross compiling
++as_fn_error1 $? "cannot run test program while cross compiling
+ See \`config.log' for more details" "$LINENO" 5; }
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+@@ -33985,6 +33985,17 @@
+   $as_echo "$as_me: error: $2" >&2
+   as_fn_exit $as_status
+ } # as_fn_error
++as_fn_error1 ()
++{
++  as_status=$1; test $as_status -eq 0 && as_status=1
++  if test "$4"; then
++    as_lineno=${as_lineno-"$3"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
++    $as_echo "$as_me:${as_lineno-$LINENO}: error: $2" >&$4
++  fi
++  $as_echo "$as_me: error: $2" >&2
++  #as_fn_exit $as_status
++} # as_fn_error
++
+ 
+ 
+ # as_fn_set_status STATUS
