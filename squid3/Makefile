@@ -44,6 +44,12 @@ define Package/squid3/conffiles
 /etc/squid/squid.conf
 endef
 
+define Package/squid3-mod-cachemgr
+  $(call Package/squid3/Default)
+  DEPENDS:=squid3
+  TITLE:=Web based proxy manager and reporting tool
+endef
+
 CONFIGURE_ARGS += \
 	--config-cache \
 	--enable-ssl \
@@ -81,6 +87,7 @@ CONFIGURE_ARGS += \
 	--with-maxfd=4096 \
 	--without-libcap \
 	--with-krb5-config=no \
+	--with-pidfile=/var/run/squid.pid \
 	--enable-ssl-crtd \
 	--enable-icap-client
 
@@ -96,15 +103,6 @@ define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
 		install
-endef
-
-define BuildPlugin
-  define Package/$(1)/install
-	$(INSTALL_DIR) $$(1)/usr/lib/squid
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/squid/$(2) $$(1)/usr/lib/squid/
-  endef
-
-  $$(eval $$(call BuildPackage,$(1)))
 endef
 
 define Package/squid3/install
@@ -131,4 +129,10 @@ define Package/squid3/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/squid/errors/templates/* $(1)/usr/share/squid/errors/templates/
 endef
 
-$(eval $(call BuildPackage,squid3,+librt,+libstdcpp,+libltdl,+libnettle,+libnetfilter-conntrack))
+define Package/squid3-mod-cachemgr/install
+	$(INSTALL_DIR) $(1)/www/cgi-bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/squid/cachemgr.cgi $(1)/www/cgi-bin/
+endef
+
+$(eval $(call BuildPackage,squid3))
+$(eval $(call BuildPackage,squid3-mod-cachemgr))
