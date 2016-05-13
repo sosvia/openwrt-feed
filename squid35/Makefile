@@ -124,7 +124,7 @@ define Package/squid/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/squid/errors/templates/* $(1)/usr/share/squid/errors/templates/
 endef
 
-define Package/squid-mod-cachemgr/install
+define Package/squid35-mod-cachemgr/install
 	$(INSTALL_DIR) $(1)/www/cgi-bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/squid/cachemgr.cgi $(1)/www/cgi-bin/
 endef
